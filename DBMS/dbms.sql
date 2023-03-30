@@ -308,3 +308,118 @@ ADD CONSTRAINT foreign_key_1
 FOREIGN KEY (foreign_field)
 REFERENCES Referenced_Table (primary_key);
 
+------------------------------------------------------------------------------------
+
+
+CREATE TABLE Room(
+	room_number VARCHAR(4) PRIMARY KEY,
+    room_type VARCHAR(20) NOT NULL,
+    room_amount INT NOT NULL,
+    custom_id INT,
+    CONSTRAINT Room_Foreign_key
+    FOREIGN KEY (custom_id)
+    REFERENCES Custom(id)
+);
+
+
+INSERT INTO Room VALUES ('1001', '비즈니스', 200, 1);
+INSERT INTO Room VALUES ('1203', 'VIP', 1000, 10);
+INSERT INTO Room VALUES ('1801', 'VIP', 1000, 12);
+
+INSERT INTO Room VALUES ('1002', '비즈니스', 200, 1);
+INSERT INTO Room VALUES ('1204', 'VIP', 1000, 10);
+INSERT INTO Room VALUES ('1802', 'VIP', 1000, 12);
+
+INSERT INTO Room VALUES ('1003', '비즈니스', 200, null);
+INSERT INTO Room VALUES ('1205', 'VIP', 1000, null);
+INSERT INTO Room VALUES ('1803', 'VIP', 1000,  null);
+
+SELECT * FROM Room;
+
+-- JOIN
+-- 여러개의 테이블에서 관계로 연결되어 있는 표현을 하나로 검색하도록 해주는
+-- 쿼리
+
+-- INNER JOIN
+-- FROM 첫번째테이블 INNER JOIN 두번째테이블 ON 조건
+-- FROM 첫번째테이블 JOIN 두번째테이블 ON 조건
+-- FROM 첫번째테이블, 두번째테이블 WHERE 조건
+SELECT R.room_number AS '방번호', C.name AS '고객이름'
+FROM Room R INNER JOIN Custom C   # R,C 처럼 별칭을 붙이면 편하게 입력 할 수 있다.
+ON C.id = R.custom_id; 
+
+SELECT *
+FROM Room JOIN Custom;
+
+SELECT *
+FROM Room, Custom
+WHERE Room.custom_id = Custom.id;
+
+-- LEFT JOIN
+-- FROM 첫번째테이블 LEFT JOIN 두번째테이블 ON 조건 
+SELECT *
+FROM Room LEFT JOIN Custom
+ON Room.custom_id = Custom.id;
+
+INSERT INTO Custom
+VALUES (20, 'David', 'David@gmail.com', 30, 'New york', 1);
+
+-- RIGHT JOIN
+-- FORM 첫번째테이블 RIGHT JOIN 두번째테이블 ON 조건
+SELECT *
+FROM Room RIGHT JOIN Custom
+on Room.custom_id = Custom.id;
+
+-- Sub Query
+-- 복잡한 Join 문을 조금더 간결하게 사용할 수 있도록 해주는 쿼리
+-- SELECT, INSERT, UPDATE, DELETE, SET, DO 에서 사용가능
+-- FROM, WHERE 절에서 사용가능
+
+-- WHERE절 사용
+SELECT *
+FROM Room
+WHERE custom_id IN (
+	SELECT id
+    FROM Custom
+    WHERE name = 'Michle'
+);
+
+-- ex) IN 연산 + LIKE
+
+SELECT * 
+FROM Custom
+WHERE id IN (
+	SELECT id
+    FROM Custom
+    WHERE name LIKE 'M%'
+    OR name LIKE 'D%'
+);
+
+-- FROM
+SELECT CustomId
+FROM(
+	SELECT id AS CustomId, email AS CUstomEmail
+    FROM Custom
+)C;
+
+SELECT id AS CustomId, email AS CUstomEmail
+    FROM Custom;
+
+
+-- ORDER BY(정렬)
+-- 특정 필드를 기준으로 오름차순 내림차순 정렬하여 결과를 반환
+SELECT *
+FROM Namgu;
+
+-- 내림차순 DESC;
+SELECT * FROM Namgu
+ORDER BY 세대수 DESC;   
+
+-- 오름차순 ASC;
+SELECT * FROM Namgu
+ORDER BY 통 DESC, 반 ASC;   -- 오름차순은 기본적으로 적지않아도 된다.
+
+
+
+
+
