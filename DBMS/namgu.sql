@@ -82,3 +82,22 @@ AND (18세이상인구수 <= 12000 OR 반 >= 100);
 -- 레코드의 전체 필드 검색
 SELECT * FROM Namgu
 WHERE 인구수 >= 10000 AND 18세이상인구수 <= 12000 OR 반 >= 100;
+
+SELECT count(면적), max(세대수), min(세대수)
+FROM Namgu
+WHERE 면적 = 1;
+
+SELECT 면적, count(*), max(세대수),  min(세대수)
+FROM Namgu
+GROUP BY 면적;
+
+-- Group By 되지 않은 필드는 Having에 사용 불가능
+SELECT 면적, count(*), max(세대수),  min(세대수)
+FROM Namgu
+GROUP BY 면적
+HAVING 세대수 >= 5000
+ORDER BY 면적;
+
+
+
+

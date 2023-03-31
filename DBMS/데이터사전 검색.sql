@@ -1,0 +1,9 @@
+SHOW TABLES;
+
+SHOW INDEXES FROM Custom;
+
+SELECT * FROM mysql.user;
+
+
+
+
